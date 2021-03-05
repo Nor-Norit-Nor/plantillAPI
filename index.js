@@ -39,18 +39,19 @@ const storedData = JSON.stringify(data)
 localStorage.setItem("storedData", storedData)
 }
 
-const goBack = () => {
+const goBack = (element) => {
   const storedData = JSON.parse(localStorage.getItem("storedData")) 
   // paintResults(storedData)
-  const restore= storedData.results.map(element => console.log(element))
-  console.log('back', storedData.results)
+  const restore= storedData.results.map(element => console.log('elem segundo',element))
+ paintResults(element)
+ console.log('he ido atrás', element)
 
 
 }
 
 //PINTAMOS RESULTADOS
   function paintResults(element) {
-    // console.log('element', element)
+    console.log('element primero', element)
     
       let result = document.createElement("div");
       containerResults.appendChild(result);
