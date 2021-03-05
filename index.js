@@ -7,23 +7,51 @@ let containerResults = document.querySelector(".containerResults");
 
 
 //FUNCIONES
-function fetchTo(character) {
-    if(character !== "") {
-      fetch(`https://rickandmortyapi.com/api/character/?name=${character}`)
-        .then(response => response.json())
-        .then(data => {
-          sessionStorage.setItem(`save-${character}`, JSON.stringify(data))
-          console.log(data)
-          return data
-        })
-        .then(data => 
-            data.results.map(element => paintResults(element)
+// function fetchTo(character) {
+//     if(character !== "") {
+//       fetch(`https://rickandmortyapi.com/api/character/?name=${character}`)
+//         .then(response => response.json())
+//         .then(data => {
+//           sessionStorage.setItem(`save-${character}`, JSON.stringify(data))
+//           console.log(data)
+//           return data
+//         })
+//         .then(data => 
+//             data.results.map(element => paintResults(element)
+//             //recuerda que en data.map debe hacerse si el resultado del fetch es un array de objetos. 
+//           ))
+//     }
+//   }
+function fetchTo(character){
+  if(character !== ""){
+    fetch(`https://rickandmortyapi.com/api/character/?name=${character}`)
+          .then(response => response.json())
+          // .then(data => { return data})
+          .then(data => 
+            data.results.map(element => paintResults(element), saveData(data)
             //recuerda que en data.map debe hacerse si el resultado del fetch es un array de objetos. 
-          ))
-    }
+            ))
   }
+}
+//GUARDAMOS DATA EN LOCALSTORAGE
+const saveData =(data)=>{
+const storedData = JSON.stringify(data)
+localStorage.setItem("storedData", storedData)
+}
 
+const goBack = () => {
+  const storedData = JSON.parse(localStorage.getItem("storedData")) 
+  // paintResults(storedData)
+  const restore= storedData.results.map(element => console.log(element))
+  console.log('back', storedData.results)
+
+
+}
+
+//PINTAMOS RESULTADOS
   function paintResults(element) {
+    // console.log('element', element)
+    
       let result = document.createElement("div");
       containerResults.appendChild(result);
       let text = document.createElement("p");
@@ -31,6 +59,7 @@ function fetchTo(character) {
       text.appendChild(content);
       containerResults.appendChild(text);
       text.addEventListener('click', () => paintDetails(element));
+      // saveData(data);
   }
 
   buttonSearch.addEventListener('click', function() {
@@ -52,19 +81,42 @@ function fetchTo(character) {
         containerDetails.appendChild(backBtn);
 
         backBtn.addEventListener('click', ()=>{
-          goBack();
+          goBack(element);
         })
   }
 
-  function goBack(){
+//   function goBack(){
+//     console.log('paso por back')
+// let storageSaved;
+// if(sessionStorage.getItem(`save-${character}`)){
+//   storageSaved = JSON.parse(localStorage.getItem(`save-${character}`))
+ 
 
-    const storageSaved = JSON.parse(localStorage.getItem(`save-${character}`))
-    console.log('paso por back', storageSaved)
-      paintResults(storageSaved)
-    recoverResults = input.value
-  }
+// }else{
+// storageSaved=[]
+// }
+//       paintResults(storageSaved)
+//   }
+
+//   const Delete = () => {
+
+//     let nodes = document.querySelectorAll(".search, .container, #backButton")
+//     nodes.forEach(el => el.remove())
+
+// }
 
 
+
+
+
+// const reset = () => {
+
+//     const storedSearch = JSON.stringify("")
+//     localStorage.setItem("storedSearch", storedSearch)
+//     input.value = ""
+//     deletePreviousNodes()
+
+// }
 
 
   
