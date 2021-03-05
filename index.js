@@ -39,12 +39,19 @@ const storedData = JSON.stringify(data)
 localStorage.setItem("storedData", storedData)
 }
 
-const goBack = (element) => {
+const goBack = () => {
+  let containerD= document.querySelector('.containerDetails')
+  // console.log(containerD)
+  containerD.remove();
   const storedData = JSON.parse(localStorage.getItem("storedData")) 
-  // paintResults(storedData)
-  const restore= storedData.results.map(element => console.log('elem segundo',element))
- paintResults(element)
- console.log('he ido atrás', element)
+  // const results = storedData.results
+  const restore= storedData.results.map(element =>  element)
+  let containerResults = document.createElement("div");
+  containerResults.setAttribute('class', 'containerResults')
+  wrapper.appendChild(containerResults);
+  paintResults(element)
+
+ console.log('he ido atrás')
 
 
 }
@@ -70,6 +77,7 @@ const goBack = (element) => {
   function paintDetails(element) {
         containerResults.remove();    
         let containerDetails = document.createElement("div");
+        containerDetails.setAttribute("class", "containerDetails");
         wrapper.appendChild(containerDetails);
         let picture = document.createElement("img"); 
         picture.setAttribute("src", element.image);
@@ -81,9 +89,7 @@ const goBack = (element) => {
         backBtn.textContent = 'BACK';
         containerDetails.appendChild(backBtn);
 
-        backBtn.addEventListener('click', ()=>{
-          goBack(element);
-        })
+        backBtn.addEventListener('click', goBack)
   }
 
 //   function goBack(){
