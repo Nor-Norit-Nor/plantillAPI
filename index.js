@@ -43,23 +43,23 @@ const goBack = () => {
   let containerD= document.querySelector('.containerDetails')
   // console.log(containerD)
   containerD.remove();
-  const storedData = JSON.parse(localStorage.getItem("storedData")) 
-  // const results = storedData.results
-  const restore= storedData.results.map(element =>  element)
   let containerResults = document.createElement("div");
   containerResults.setAttribute('class', 'containerResults')
   wrapper.appendChild(containerResults);
-  paintResults(element)
+  // paintResults(restore)
+  
+  const storedData = JSON.parse(localStorage.getItem("storedData")) 
+  // const results = storedData.results
+ storedData.results.map(element =>  paintResults(element))
+ console.log('he ido atrás', storedData)
 
- console.log('he ido atrás')
 
 
 }
 
 //PINTAMOS RESULTADOS
   function paintResults(element) {
-    console.log('element primero', element)
-    
+    let containerResults = document.querySelector(".containerResults")
       let result = document.createElement("div");
       containerResults.appendChild(result);
       let text = document.createElement("p");
@@ -68,6 +68,8 @@ const goBack = () => {
       containerResults.appendChild(text);
       text.addEventListener('click', () => paintDetails(element));
       // saveData(data);
+      console.log('element', text)
+
   }
 
   buttonSearch.addEventListener('click', function() {
