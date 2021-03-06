@@ -22,12 +22,58 @@ const saveData =(data)=>{
 const storedData = JSON.stringify(data);
 localStorage.setItem("storedData", storedData);
 }
+//PINTAMOS RESULTADOS
+function paintResults(element) {
+  let containerResults = document.querySelector(".containerResults");
+
+  let result = document.createElement("div");
+  containerResults.appendChild(result);
+
+  let text = document.createElement("p");
+  let content = document.createTextNode(element.name);
+  text.appendChild(content);
+  containerResults.appendChild(text);
+
+  text.addEventListener('click', () => paintDetails(element));
+}
+
+//BUSCAR
+buttonSearch.addEventListener("click", function() {
+if ( !localStorage.getItem(`search-${input.value}`) ){
+    fetchTo(input.value);
+} else {
+  const storedData = JSON.parse(localStorage.getItem("storedData"));
+  storedData.results.map(element =>  paintResults(element));
+}
+})
+
+//PINTAMOS DETALLE
+function paintDetails(element) {
+    let containerResults = document.querySelector(".containerResults");
+    containerResults.remove();   
+
+    let containerDetails = document.createElement("div");
+    containerDetails.setAttribute("class", "containerDetails");
+    wrapper.appendChild(containerDetails);
+
+    let picture = document.createElement("img"); 
+    picture.setAttribute("src", element.image);
+    containerDetails.appendChild(picture);
+
+    let backBtn = document.createElement('button');
+    backBtn.setAttribute("class", "btn-back");
+    backBtn.setAttribute('content', 'BACK');
+    backBtn.textContent = 'BACK';
+    containerDetails.appendChild(backBtn);
+
+      //EVENTO:IR ATRÁS
+    backBtn.addEventListener('click', goBack);
+}
 
 //IR ATRÁS
 const goBack = () => {
-  let containerD= document.querySelector('.containerDetails');
-
-  containerD.remove();
+  let containerDetails= document.querySelector('.containerDetails');
+  containerDetails.remove();
 
   let containerResults = document.createElement("div");
   containerResults.setAttribute('class', 'containerResults');
@@ -36,44 +82,13 @@ const goBack = () => {
   const storedData = JSON.parse(localStorage.getItem("storedData"));
   storedData.results.map(element =>  paintResults(element));
 }
+//RESET
+function resetSearch() {
+  let containerResults = document.querySelector(".containerResults");
 
-//PINTAMOS RESULTADOS
-  function paintResults(element) {
-      let containerResults = document.querySelector(".containerResults");
+  containerResults.querySelectorAll('*').forEach(nodes => nodes.remove())
+  input.value = "";
+}
 
-      let result = document.createElement("div");
-      containerResults.appendChild(result);
-
-      let text = document.createElement("p");
-      let content = document.createTextNode(element.name);
-      text.appendChild(content);
-      containerResults.appendChild(text);
-
-      text.addEventListener('click', () => paintDetails(element));
-  }
-
-  buttonSearch.addEventListener('click', function() {
-    fetchTo (input.value); 
-  })
-
-  //PINTAMOS DETALLE
-  function paintDetails(element) {
-        containerResults.remove();   
-
-        let containerDetails = document.createElement("div");
-        containerDetails.setAttribute("class", "containerDetails");
-        wrapper.appendChild(containerDetails);
-
-        let picture = document.createElement("img"); 
-        picture.setAttribute("src", element.image);
-        containerDetails.appendChild(picture);
-
-        let backBtn = document.createElement('button');
-        backBtn.setAttribute("class", "btn-back");
-        backBtn.setAttribute('content', 'BACK');
-        backBtn.textContent = 'BACK';
-        containerDetails.appendChild(backBtn);
-
-        backBtn.addEventListener('click', goBack);
-  }
-
+//RESETEAMOS
+buttonReset.addEventListener('click', resetSearch);
